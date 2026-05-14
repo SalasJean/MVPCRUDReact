@@ -1,13 +1,15 @@
-//meotodo publico
+//meotodo publico llamar a la conexion de la api
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const getPublicTours = async () => {
-  const response = await fetch('/api/tours')
+  const response = await fetch(`${API_URL}/tours`)
   if (!response.ok) throw new Error('Error al cargar los tours')
   return response.json()
 }
 
 // solo administrador
 export const getAdminTours = async (token) => {
-  const response = await fetch('/api/admin/tours', {
+  const response = await fetch(`${API_URL}/admin/tours`, {
     headers: { 'Authorization': `Bearer ${token}` }
   })
   if (response.status === 401) throw new Error('No autorizado. Inicia sesión nuevamente.')
@@ -16,7 +18,7 @@ export const getAdminTours = async (token) => {
 }
 
 export const createTour = async (tourData, token) => {
-  const response = await fetch('/api/admin/tours', {
+  const response = await fetch(`${API_URL}/admin/tours`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -33,7 +35,7 @@ export const createTour = async (tourData, token) => {
 }
 
 export const updateTour = async (id, tourData, token) => {
-  const response = await fetch(`/api/admin/tours/${id}`, {
+  const response = await fetch(`${API_URL}/admin/tours/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -50,7 +52,7 @@ export const updateTour = async (id, tourData, token) => {
 }
 
 export const deleteTour = async (id, token) => {
-  const response = await fetch(`/api/admin/tours/${id}`, {
+  const response = await fetch(`${API_URL}/admin/tours/${id}`, {
     method: 'DELETE',
     headers: { 'Authorization': `Bearer ${token}` }
   })

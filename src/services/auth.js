@@ -1,6 +1,8 @@
 //logeo
+const API_URL = import.meta.env.VITE_API_URL;
+console.log(API_URL)
 export const loginAdmin = async (email, password) => {
-  const response = await fetch('/api/auth/login', {
+  const response = await fetch(`${API_URL}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password })
@@ -12,7 +14,7 @@ export const loginAdmin = async (email, password) => {
 }
 //solo con perfil de admin
 export const getAdminProfile = async (token) => {
-  const response = await fetch('/api/auth/me', {
+  const response = await fetch(`${API_URL}/auth/me`, {
     headers: { 'Authorization': `Bearer ${token}` }
   })
   if (response.status === 401) throw new Error('Token inválido o expirado')

@@ -11,28 +11,35 @@ const EMPTY = {
   maxGroupSize: 12,
   pricePerPerson: '',
   thumbnailUrl: '',
-  status: 'published'
+  status: 'published',
+  nameEs: '',
+  shortDescriptionEs: '',
+  fullDescriptionEs: '',
+  meetingPointEs: ''
 }
 
 function TourForm({ editingTour, onSave, onCancel }) {
-  const [form, setForm]     = useState(EMPTY)
-  const [error, setError]   = useState('')
+  const [form, setForm] = useState(EMPTY)
+  const [error, setError] = useState('')
   const [saving, setSaving] = useState(false)
 
-  // Editar tour con placehorlder -> recuerda que el react +18 nos marcarra erro 
   useEffect(() => {
     if (editingTour) {
       setForm({
-        slug:          editingTour.slug          || '',
-        category:      editingTour.category      || 'cultural',
-        durationDays:  editingTour.durationDays  || '',
+        slug: editingTour.slug || '',
+        category: editingTour.category || 'cultural',
+        durationDays: editingTour.durationDays || '',
         durationHours: editingTour.durationHours || '',
-        difficulty:    editingTour.difficulty    || 3,
-        minGroupSize:  editingTour.minGroupSize  || 2,
-        maxGroupSize:  editingTour.maxGroupSize  || 12,
+        difficulty: editingTour.difficulty || 3,
+        minGroupSize: editingTour.minGroupSize || 2,
+        maxGroupSize: editingTour.maxGroupSize || 12,
         pricePerPerson: editingTour.pricePerPerson || '',
-        thumbnailUrl:  editingTour.thumbnailUrl  || '',
-        status:        editingTour.status        || 'published'
+        thumbnailUrl: editingTour.thumbnailUrl || '',
+        status: editingTour.status || 'published',
+        nameEs: editingTour.translation?.name || '',
+        shortDescriptionEs: editingTour.translation?.shortDescription || '',
+        fullDescriptionEs: editingTour.translation?.fullDescription || '',
+        meetingPointEs: editingTour.translation?.meetingPoint || ''
       })
     } else {
       setForm(EMPTY)
@@ -50,13 +57,23 @@ function TourForm({ editingTour, onSave, onCancel }) {
     setSaving(true)
 
     const payload = {
-      ...form,
-      durationDays:   form.durationDays  ? Number(form.durationDays)  : null,
-      durationHours:  form.durationHours ? Number(form.durationHours) : null,
-      difficulty:     Number(form.difficulty),
-      minGroupSize:   Number(form.minGroupSize),
-      maxGroupSize:   Number(form.maxGroupSize),
+      slug: form.slug,
+      category: form.category,
+      durationDays: form.durationDays ? Number(form.durationDays) : null,
+      durationHours: form.durationHours ? Number(form.durationHours) : null,
+      difficulty: Number(form.difficulty),
+      minGroupSize: Number(form.minGroupSize),
+      maxGroupSize: Number(form.maxGroupSize),
       pricePerPerson: Number(form.pricePerPerson),
+      thumbnailUrl: form.thumbnailUrl || null,
+      status: form.status,
+      translation: {
+        language: 'es',
+        name: form.nameEs,
+        shortDescription: form.shortDescriptionEs,
+        fullDescription: form.fullDescriptionEs,
+        meetingPoint: form.meetingPointEs
+      }
     }
 
     try {
@@ -95,7 +112,6 @@ function TourForm({ editingTour, onSave, onCancel }) {
             <option value="cultural">Cultural</option>
             <option value="adventure">Aventura</option>
             <option value="nature">Naturaleza</option>
-            <option value="gastronomy">Gastronomía</option>
           </select>
         </div>
 
@@ -189,6 +205,49 @@ function TourForm({ editingTour, onSave, onCancel }) {
             value={form.thumbnailUrl}
             onChange={handleChange}
             placeholder="https://imgs.travel.pe/tours/machu.jpg"
+          />
+        </div>
+
+        <div className="field full">
+          <label>Nombre del Tour (Español)</label>
+          <input
+            name="nameEs"
+            value={form.nameEs}
+            onChange={handleChange}
+            placeholder="Ej: Machu Picchu Clásico"
+            required
+          />
+        </div>
+
+        <div className="field full">
+          <label>Descripción Corta (Español)</label>
+          <textarea
+            name="shortDescriptionEs"
+            value={form.shortDescriptionEs}
+            onChange={handleChange}
+            placeholder="Descripción breve del tour"
+            rows="2"
+          />
+        </div>
+
+        <div className="field full">
+          <label>Descripción Completa (Español)</label>
+          <textarea
+            name="fullDescriptionEs"
+            value={form.fullDescriptionEs}
+            onChange={handleChange}
+            placeholder="Descripción detallada del tour"
+            rows="4"
+          />
+        </div>
+
+        <div className="field full">
+          <label>Punto de Encuentro (Español)</label>
+          <input
+            name="meetingPointEs"
+            value={form.meetingPointEs}
+            onChange={handleChange}
+            placeholder="Ej: Plaza de Armas de Cusco"
           />
         </div>
       </div>

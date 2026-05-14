@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react'
 
 // Servicios
@@ -39,7 +38,8 @@ function App() {
     setError(null)
     try {
       const data = await getPublicTours()
-      setTours(data)
+      const toursArray = Array.isArray(data) ? data : data.tours || data.data || []
+      setTours(toursArray)
     } catch (err) {
       setError(err.message)
     } finally {
@@ -52,7 +52,8 @@ function App() {
     setError(null)
     try {
       const data = await getAdminTours(token)
-      setTours(data)
+      const toursArray = Array.isArray(data) ? data : data.tours || data.data || []
+      setTours(toursArray)
     } catch (err) {
       setError(err.message)
       if (err.message.includes('No autorizado')) handleLogout()
@@ -171,7 +172,6 @@ function App() {
         </div>
 
         <nav className="header-nav">
-          {/* Botón Tours públicos — siempre visible ojito */}
           <button
             className={`nav-btn ${view === 'public' ? 'active' : ''}`}
             onClick={() => setView('public')}
